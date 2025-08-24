@@ -19,10 +19,14 @@ const uploadOnCloudinary = async (localFilePath) => {
             resource_type: "auto"
         })
 
-        fs.unlink(localFilePath)
+        if (fs.existsSync(localFilePath)) {
+      await fs.promises.unlink(localFilePath);
+    }
         return response;
     } catch (error) {
-        fs.unlinkSync(localFilePath) // remove local file which has been failed from server
+        if (fs.existsSync(localFilePath)) {
+      await fs.promises.unlink(localFilePath);
+    } // remove local file which has been failed from server
         return null;
     }
 }
